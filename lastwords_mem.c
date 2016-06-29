@@ -5,7 +5,7 @@
 
 /* 使用内存空间(0x1E000000~0x2000000)共32MB空间 */
 #define LASTWORDS_MEM_ADDR		0x1E000000
-#define LASTWORDS_MEM_SIZE		0x60//0x2000000			/* 32MB */
+#define LASTWORDS_MEM_SIZE		0x2000000			/* 32MB */
 
 static phys_addr_t phyaddr = (phys_addr_t)LASTWORDS_MEM_ADDR;
 static int memsize = LASTWORDS_MEM_SIZE;
@@ -27,13 +27,25 @@ void lastwords_clean_mem(void)
 }
 
 /* ******************************************
+ * 函 数 名: lastwords_get_memphy
+ * 功能描述: 临终遗言获取内存物理地址
+ * 输入参数: void
+ * 输出参数: void	
+ * 返 回 值: 返回物理基地址
+ * ****************************************** */
+phys_addr_t lastwords_get_memphy(void)
+{
+	return phyaddr;
+}
+
+/* ******************************************
  * 函 数 名: lastwords_get_membase
  * 功能描述: 临终遗言获取内存虚拟基地址
  * 输入参数: void
  * 输出参数: void	
  * 返 回 值: 成功返回基地址，失败返回NULL
  * ****************************************** */
-void * lastwords_get_membase(void)
+void *lastwords_get_membase(void)
 {
 	return memaddr;
 }
