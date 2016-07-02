@@ -248,10 +248,11 @@ int lastwords_export_attr(__u16 attr_type, __u32 export_type, char *trigger)
 		pr_err("Lastwords export system time error:%d\n", ret);
 		return ret;
 	}
-
+	
 	/* 输出系统时间 */
 	if (LASTWORDS_EXPORT_TIME & export_type) {
-		ret = lastwords_export_record(LAST_WORDS_RECD_TIME, lastwords_export_time, NULL);
+		ret = lastwords_export_record(LAST_WORDS_RECD_TIME, 
+									lastwords_export_time, NULL);
 		if (0 != ret) {
 			pr_err("Lastwords export system time error:%d\n", ret);
 			return ret;
@@ -260,7 +261,8 @@ int lastwords_export_attr(__u16 attr_type, __u32 export_type, char *trigger)
 
 	/* 输出系统信息 */
 	if (LASTWORDS_EXPORT_SYSINFO & export_type) {
-		ret = lastwords_export_record(LAST_WORDS_RECD_SYSINFO, lastwords_export_sysinfo, NULL);
+		ret = lastwords_export_record(LAST_WORDS_RECD_SYSINFO, 
+									lastwords_export_sysinfo, NULL);
 		if (0 != ret) {
 			pr_err("Lastwords export system info error:%d\n", ret);
 			return ret;
@@ -269,7 +271,8 @@ int lastwords_export_attr(__u16 attr_type, __u32 export_type, char *trigger)
 
 	/* 输出backtrace信息 */
 	if (LASTWORDS_EXPORT_BACKTRACE & export_type) {
-		ret = lastwords_export_record(LAST_WORDS_RECD_BACKTRACE, lastwords_export_btrace, NULL);
+		ret = lastwords_export_record(LAST_WORDS_RECD_BACKTRACE, 
+									lastwords_export_btrace, NULL);
 		if (0 != ret) {
 			pr_err("Lastwords export back trace error:%d\n", ret);
 			return ret;

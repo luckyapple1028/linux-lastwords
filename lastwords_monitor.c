@@ -42,6 +42,8 @@
 static int lastwords_oom_callback(struct notifier_block *this, 
 				unsigned long event, void *ptr)
 {
+	pr_notice("Lastwords: oom notify capture\n");
+	
 	return NOTIFY_DONE;
 }
 
@@ -62,6 +64,8 @@ static struct notifier_block lastwords_oom_notifier = {
 static int lastwords_die_callback(struct notifier_block *this, 
 				unsigned long event, void *ptr)
 {
+	pr_notice("Lastwords: die notify capture\n");
+	
 	return NOTIFY_DONE;
 }
 
@@ -82,6 +86,8 @@ static struct notifier_block lastwords_die_notifier = {
 static int lastwords_netevent_callback(struct notifier_block *this, 
 				unsigned long event, void *ptr)
 {
+	pr_notice("Lastwords: net event notify capture\n");
+	
 	return NOTIFY_DONE;
 }
 
@@ -104,6 +110,8 @@ static int lastwords_netdev_callback(struct notifier_block *this,
 {
 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
 	struct net *net = dev_net(dev);
+
+	pr_notice("Lastwords: netdev event notify capture\n");
 
 	switch (event) {
 	/* 改变网络设备地址 */
@@ -145,6 +153,8 @@ static struct notifier_block lastwords_netdev_notifier = {
 static int lastwords_reboot_callback(struct notifier_block *this, 
 				unsigned long event, void *ptr)
 {
+	pr_notice("Lastwords: reboot notify capture\n");
+	
 	(void)lastwords_export_attr(LAST_WORDS_ATTR_REBOOT, LASTWORDS_REBOOT_EXPORT, 
 							"System reboot");
 
@@ -168,6 +178,8 @@ static struct notifier_block lastwords_reboot_notifier = {
 static int lastwords_panic_callback(struct notifier_block *this, 
 				unsigned long event, void *ptr)
 {
+	pr_notice("Lastwords: panic notify capture\n");
+	
 	return NOTIFY_DONE;
 }
 

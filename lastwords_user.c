@@ -176,8 +176,8 @@ void lastwords_show_all(void)
 				printf("/-------------%s-------------/\n", lw_rdname[LAST_WORDS_RECD_N(plwa2->type)]);
 				printf("Attr Type = %d\n", plwa2->type);
 				printf("Attr Len = 0x%x\n\n", plwa2->len);
-				printf("%s\n", (char *) LWA_DATA(plwa2));
-				printf("/--------------------------------/\n");
+				if (plwa2->len > LWA_HDRLEN)
+					printf("%s\n", (char *) LWA_DATA(plwa2));
 				
 				plwa2 = (struct lws_attr *) ((char *)LWA_DATA(plwa) + len2);
 			}
@@ -185,9 +185,12 @@ void lastwords_show_all(void)
 			printf("/-------------%s-------------/\n", lw_attrname[LAST_WORDS_ATTR_N(plwa->type)]);
 			printf("Attr Type = %d\n", plwa->type);
 			printf("Attr Len = 0x%x\n\n", plwa->len);
-			printf("%s\n", (char *) LWA_DATA(plwa));
-			printf("/--------------------------------/\n");
+			if (plwa->len > LWA_HDRLEN)
+				printf("%s\n", (char *) LWA_DATA(plwa));
+			
 		}
+
+		printf("/--------------------------------/\n");
 
 		free(buf);
 		buf = NULL;
@@ -253,8 +256,9 @@ void lastwords_main_control(void)
 		printf("\n*************** Lastwords Main Control ***************\n");
 		printf("1.Show Header Info\n");
 		printf("2.Show All Info\n");
-		printf("3.show mem hex\n");
+		printf("3.Show Mem Hex\n");
 		printf("4.Format Data\n");
+		printf("5.Trigger User Record\n");
 		printf("0.Close\n");
 		printf("please input choice:\n");
 
@@ -264,12 +268,15 @@ void lastwords_main_control(void)
 		}
 
 		switch (*pbuf) {
+			/* Show Header Info */
 			case '1':
 				lastwords_show_header();
 				break;
+			/* Show All Info */
 			case '2':
 				lastwords_show_all();
 				break;
+			/* show mem hex */
 			case '3': {
 				unsigned int addr = 0;
 
@@ -277,9 +284,29 @@ void lastwords_main_control(void)
 				lastwords_show_memhex(addr);
 				break;		
 			}
+			/* Format Data */
 			case '4':
 				lastwords_format_data();
 				break;
+			/* Trigger User Record */
+			case '5': {
+				char temp[128] = {0};
+				int fd = -1;
+
+				printf("please inupt trigger message:");
+				(void)fgets(temp, sizeof(temp), stdin);
+
+				fd = open("/proc/lastwords", O_RDWR);
+				if (0 > fd) {
+					printf("fail to open /proc/lastwords");
+					break;
+				}
+					
+				(void)write(fd, temp, strlen(temp)+1);
+		
+				close(fd);
+				break;
+			}	
 			case '0':				
 				return;
 			default:

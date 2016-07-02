@@ -139,6 +139,8 @@ void lastwords_end_attr(struct lws_attr *plwa)
 	/* 将本attr中的'\0'转换为'\n'(不包含最后的'\0') */
 	payload = LWA_PAYLOAD(plwa->len);
 	p = (char*)LWA_DATA(plwa);
+
+	pr_debug("attr payload=%d\n", payload);
 	
 	if (0 < payload && LAST_WORDS_RECD_UNSPEC < plwa->type &&
 			__LAST_WORDS_RECD_MAX > plwa->type) {
@@ -150,7 +152,7 @@ void lastwords_end_attr(struct lws_attr *plwa)
 	}
 
 	/* 更新参数 */
-	plwh->lh_len = LWRECD_ALIGN(plwh->lh_len);		
+	plwh->lh_len = LWRECD_ALIGN(plwh->lh_len);
 	plwh->lh_ecc = 0;	/* to do */
 	
 	spin_unlock_irqrestore(&record_lock, flag);
